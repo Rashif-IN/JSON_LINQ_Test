@@ -1,1 +1,1 @@
-[{"Inventory_id":9382,"Name":"Brown Chair","Type":"furniture","Tags":["chair","furniture","brown"],"Purchased_at":1579190471,"Placement":{"Room_id":3,"Name":"Meeting Room"}},{"Inventory_id":9380,"Name":"Big Desk","Type":"furniture","Tags":["desk","furniture","brown"],"Purchased_at":1579190642,"Placement":{"Room_id":3,"Name":"Meeting Room"}}]
+[{"Inventory_id":9382,"Name":"Brown Chair","Type":"furniture","Tags":["chair","furniture","brown"],"Purchased_at":1579190471,"Placement":{"Room_id":3,"Name":"Meeting Room"}}]

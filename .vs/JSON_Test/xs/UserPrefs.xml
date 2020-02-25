@@ -2,11 +2,13 @@
   <MonoDevelop.Ide.ItemProperties.JSON__Test PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="JSON_Test/Program.cs">
     <Files>
-      <File FileName="JSON_Test/Program.cs" Line="378" Column="43" />
-      <File FileName="JSON_Test/num1.json" Line="43" Column="30" NotebookId="1" />
-      <File FileName="JSON_Test/num2.json" Line="15" Column="9" NotebookId="1" />
-      <File FileName="JSON_Test/num3.json" Line="14" Column="25" NotebookId="1" />
-      <File FileName="JSON_Test/purchased - at - 2020 - 01 - 16.json" Line="1" Column="344" NotebookId="1" />
+      <File FileName="JSON_Test/Program.cs" Line="285" Column="16" />
+      <File FileName="JSON_Test/items.json" Line="1" Column="344" />
+      <File FileName="JSON_Test/electronic.json" Line="1" Column="324" />
+      <File FileName="JSON_Test/furnitures.json" Line="1" Column="344" />
+      <File FileName="JSON_Test/all-browns.json" Line="1" Column="344" />
+      <File FileName="JSON_Test/purchased - at - 2020 - 01 - 16.json" Line="5" Column="5" />
+      <File FileName="JSON_Test/num3.json" Line="11" Column="31" NotebookId="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

@@ -14,7 +14,7 @@ namespace JSON_Test
         {
             public string Full_name
             { get; set; }
-            public string Birthday
+            public DateTime Birthday
             { get; set; }
             public List <string> Phones
             { get; set; }
@@ -25,7 +25,7 @@ namespace JSON_Test
             { get; set; }
             public string Title
             { get; set; }
-            public string Published_at
+            public DateTime Published_at
             { get; set; }
         }
         public class User
@@ -101,131 +101,74 @@ namespace JSON_Test
         {
             //Num1-Your tasks:
             var json1 = File.ReadAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/num1.json");
-
             var num1 = JsonConvert.DeserializeObject<List<User>>(json1);
 
-
-
             //Find users who doesn't have any phone numbers.
-            List <string> NoPhone = new List<string>();
-            foreach(var X in num1 )
-            {
-                if(X.Profile.Phones.Count==0)
-                {
-                    NoPhone.Add(X.Profile.Full_name);
-                }
-            }
+            IEnumerable<string> Phoneless =
+                from X in num1
+                where X.Profile.Phones.Count == 0
+                select X.Profile.Full_name;
             Console.WriteLine("users who doesn't have any phone numbers:");
-            Console.Write(String.Join(", ", NoPhone));
+            Console.Write(String.Join(", ", Phoneless));
             Console.WriteLine(" ");
 
-            //Find users who have articles. //keluar duplikat
-            List<string> HaveArticle = new List<string>();
-            foreach (var X in num1)
-            {
-                foreach (var Y in X.Articles)
-                {
-                    
-                    if ((Y.Title).Length != 0)
-                    {
-
-                        HaveArticle.Add(X.Profile.Full_name);
-                    }
-                }
-                
-            }
+            ////Find users who have articles. //keluar duplikat
+            IEnumerable<string> HaveArticle =
+                from X in num1
+                from Y in X.Articles
+                where (Y.Title).Length != 0
+                select X.Profile.Full_name;
             var result = HaveArticle.Distinct();
             Console.WriteLine("users who have articles: ");
             Console.Write(String.Join(", ", result));
             Console.WriteLine(" ");
 
-            //Find users who have "annis" on their name.
-            List<string> Annis = new List<string>();
-            foreach (var X in num1)
-            {
-                string S = X.Profile.Full_name;
-                if ((S.ToLower()).Contains("annis"))
-                {
-                    Annis.Add(X.Profile.Full_name);
-                }
-            }
+            ////Find users who have "annis" on their name.
+            IEnumerable<string> Annis =
+                from X in num1
+                where ((X.Profile.Full_name).ToLower()).Contains("annis")
+                select X.Profile.Full_name;
             Console.WriteLine("users who have \"annis\" on their name:");
             Console.Write(String.Join(", ", Annis));
             Console.WriteLine(" ");
 
-            //Find users who have articles on year 2020.
-            List<string> HaveArticle2020 = new List<string>();
-            foreach (var X in num1)
-            {
-               
-                foreach( var Y in X.Articles)
-                {
-                    if ((Y.Published_at).Substring(0, 4) == "2020")
-                    {
-                        HaveArticle2020.Add(Y.Title);
-                    }
-                }
-
-            }
+            ////Find users who have articles on year 2020.
+            IEnumerable<string> HaveArticle2020 =
+                from X in num1
+                from Y in X.Articles
+                where (Y.Published_at).Year == 2020
+                select X.Profile.Full_name;
             Console.WriteLine("users who have articles on year 2020: ");
             Console.Write(String.Join(", ", HaveArticle2020));
             Console.WriteLine(" ");
 
-            //Find users who are born on 1986.
-            List<string> Born96 = new List<string>();
-            foreach (var X in num1)
-            {
-                if ((X.Profile.Birthday).Substring(0, 4) == "1986")
-                {
-                    Born96.Add(X.Profile.Full_name);
-                }
-                
-            }
+            ////Find users who are born on 1986.
+            IEnumerable<string> Born86 =
+                from X in num1
+                where X.Profile.Birthday.Year == 1986
+                select X.Profile.Full_name;
             Console.WriteLine("users who are born on 1986:");
-            Console.Write(String.Join(", ", Born96));
+            Console.Write(String.Join(", ", Born86));
             Console.WriteLine(" ");
 
-            //Find articles that contain "tips" on the title.
-            List<string> TipsArticle = new List<string>();
-            foreach (var X in num1)
-            {
-                foreach (var Y in X.Articles)
-                {
-
-                    if ((Y.Title).Contains("Tips"))
-                    {
-
-                        TipsArticle.Add(Y.Title);
-                    }
-                }
-
-            }
+            ////Find articles that contain "tips" on the title.
+            IEnumerable<string> TipsArticle =
+                from X in num1
+                from Y in X.Articles
+                where (Y.Title).Contains("Tips")
+                select Y.Title;
             Console.WriteLine("articles that contain \"tips\" on the title: ");
             Console.Write(String.Join(", ", TipsArticle));
             Console.WriteLine(" ");
 
-            //Find articles published before August 2019.
-            List<string> pubAug = new List<string>();
-            foreach (var X in num1)
-            {
-                foreach (var Y in X.Articles)
-                {
+            ////Find articles published before August 2019.
+            IEnumerable<string> pubAug =
+                from X in num1
+                from Y in X.Articles
+                where (Y.Published_at).Year <2019
+                where (Y.Published_at).Month < 8 && (Y.Published_at).Year == 2019
+                select Y.Title;
 
-                    int year = Convert.ToInt32((Y.Published_at).Substring(0,4));
-                    int month = Convert.ToInt32((Y.Published_at).Substring(5, 2));
-                    if (year==2019&&month<8)
-                    {
-
-                        pubAug.Add(Y.Title);
-                    }
-                    else if(year<2019)
-                    {
-
-                        pubAug.Add(Y.Title);
-                    }
-                }
-
-            }
             Console.WriteLine("articles published before August 2019: ");
             Console.Write(String.Join(", ", pubAug));
             Console.WriteLine(" ");
@@ -238,91 +181,58 @@ namespace JSON_Test
 
 
 
-            //Num2-You need to do three things:
+            ////Num2-You need to do three things:
             var json2 = File.ReadAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/num2.json");
-
             var num2 = JsonConvert.DeserializeObject<List<Order>>(json2);
 
-            //Find all purchases made in February.
-            List<string> purFeb = new List<string>();
-            foreach (var X in num2)
-            {
-                int month = Convert.ToInt32((X.Created_at).Substring(5, 2));
-                if(month==2)
-                {
-                    purFeb.Add(X.Order_id);
-                }
-            }
+            ////Find all purchases made in February.
+            IEnumerable<string> purFeb =
+              from X in num2
+              where Convert.ToInt32(((X.Created_at).Substring (5,2)).ToLower()) == 2
+              select X.Order_id;
             Console.WriteLine("all purchases made in February: ");
             Console.Write(String.Join(", ", purFeb));
             Console.WriteLine(" ");
 
-            //Find all purchases made by Ari, and add grand total by sum all total price of items. The output should only a number.
-            List<int> ariSum = new List<int>();
-            
-            foreach (var X in num2)
-            {
-                if(X.Customer.Name=="Ari")
-                {
-                    foreach(var Y in X.Items)
-                    {
-                        ariSum.Add((Y.Price)*(Y.Qty));
-                    }
-                }
-                
-            }
-            int sum = 0;
-            foreach( int buy in ariSum)
-            {
-                sum += buy;
-            }
+            ////Find all purchases made by Ari, and add grand total by sum all total price of items. The output should only a number.
+            IEnumerable<int> ariSum =
+              from X in num2
+              where X.Customer.Name == "Ari"
+              from Y in X.Items
+              select Y.Price * Y.Qty;
+            int sum = ariSum.Sum();
             Console.WriteLine("ari belanja: ");
             Console.Write(String.Join(", ", ariSum));
             Console.WriteLine(" ");
             Console.WriteLine($"total ari belanja: {sum}");
-            
             Console.WriteLine(" ");
 
-            //Find people who have purchases with grand total lower than 300000.The output is an array of people name.Duplicate name is not allowed.
+
+
+
+            ////Find people who have purchases with grand total lower than 300000.The output is an array of people name.Duplicate name is not allowed.
             List<string> kaumHemat = new List<string>();
-            List<string> BuyerName = new List<string>();
-            foreach (var X in num2)
+            IEnumerable<string> Bname =
+              from X in num2
+              select X.Customer.Name;
+            var Buyer = Bname.Distinct().ToArray();
+            for (int i = 0; i < Buyer.Count(); i++)
             {
-
-                BuyerName.Add(X.Customer.Name);
-
-            }
-            var BuyName = BuyerName.Distinct();
-            string[] buyName = BuyName.ToArray();
-            int Names = BuyName.Count();
-            int summ = 0;
-            for (int i = 0; i < Names; i++)
-            {
-                foreach (var X in num2)
-                {
-                    if (X.Customer.Name == buyName[i])
-                    {
-                        foreach (var Y in X.Items)
-                        {
-                            summ += ((Y.Price) * (Y.Qty));
-                        }
-
-                    }
-                }
-                //Console.WriteLine(buyName[i]);
-                //Console.WriteLine(summ);
+                IEnumerable<int> sumEveryone = from X in num2
+                  where X.Customer.Name == Buyer[i]
+                  from Y in X.Items
+                  select Y.Price * Y.Qty;
+                int summ = sumEveryone.Sum();
                 if (summ < 300000)
                 {
-                    kaumHemat.Add(buyName[i]);
+                    kaumHemat.Add(Buyer[i]);
                     summ = 0;
                 }
                 else
                 {
                     summ = 0;
                 }
-
             }
-
             Console.WriteLine("para kaum hemat who have purchases with grand total lower than 300000: ");
             Console.Write(String.Join(", ", kaumHemat));
             Console.WriteLine(" ");
@@ -333,95 +243,66 @@ namespace JSON_Test
 
 
 
-            //Num3-Your tasks:
+            ////Num3-Your tasks:
             var json3 = File.ReadAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/num3.json");
 
             var num3 = JsonConvert.DeserializeObject<List<Inventory>>(json3);
 
             //Find items in Meeting Room, and save it to items.json.
-            var MeetRoomItem = new List<Inventory>();
-            foreach(var X in num3)
-            {
-                if(X.Placement.Name=="Meeting Room")
-                {
-                    MeetRoomItem.Add(X);
-                }
-            }
+            IEnumerable<Inventory> MeetRoomItem =
+              from X in num3
+              where X.Placement.Name == "Meeting Room"
+              select X;
             var MeetRoomItemFile = JsonConvert.SerializeObject(MeetRoomItem);
-            File.WriteAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/items.json", MeetRoomItemFile);
-            //Console.WriteLine("items in Meeting Room: ");
-            //Console.Write(String.Join(", ", MeetRoomItem));
-            //Console.WriteLine(" ");
+            File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/items.json", MeetRoomItemFile);
 
-
-            //Find all electronic devices, and save it to electronic.json.
-            var Electronics = new List<Inventory>();
-            foreach (var X in num3)
-            {
-                if (X.Type == "electronic")
-                {
-                    Electronics.Add(X);
-                }
-            }
+            ////Find all electronic devices, and save it to electronic.json.
+            IEnumerable<Inventory> Electronics =
+              from X in num3
+              where X.Type == "electronic"
+              select X;
             var ElectronicsFile = JsonConvert.SerializeObject(Electronics);
-            File.WriteAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/electronic.json", ElectronicsFile);
-            //Console.WriteLine("all electronic devices: ");
-            //Console.Write(String.Join(", ", Electronics));
-            //Console.WriteLine(" ");
-
-
+            File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/electronic.json", ElectronicsFile);
 
             //Find all furnitures, and save it to furnitures.json.
-            var Furnitures = new List<Inventory>();
-            foreach (var X in num3)
-            {
-                if (X.Type == "furniture")
-                {
-                    Furnitures.Add(X);
-                }
-            }
+            IEnumerable<Inventory> Furnitures =
+              from X in num3
+              where X.Type == "furniture"
+              select X;
             var FurnitureFile = JsonConvert.SerializeObject(Furnitures);
-            File.WriteAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/furnitures.json", FurnitureFile);
-            //Console.WriteLine("all furnitures: ");
-            //Console.Write(String.Join(", ", Furnitures));
-            //Console.WriteLine(" ");
+            File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/furnitures.json", FurnitureFile);
 
             //Find all items was purchased at 16 Januari 2020, and save it to purchased - at - 2020 - 01 - 16.json.
-            var ItemJan = new List<Inventory>();
 
-            foreach(var X in num3)
-            {
-                var timestamp = X.Purchased_at;
-                DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(timestamp);
-                if(date.Year==2020 && date.Month == 1 && date.Day == 16)
-                {
-                    ItemJan.Add(X);
-                }
-            }
+            //var ItemJan = new List<Inventory>();
+            //foreach (var X in num3)
+            //{
+            //    var timestamp = X.Purchased_at;
+            //    DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(timestamp);
+            //    if (date.Year == 2020 && date.Month == 1 && date.Day == 16)
+            //    {
+            //        ItemJan.Add(X);
+            //    }
+            //}
+
+            IEnumerable<Inventory> ItemJan =
+              from X in num3
+              where X.Purchased_at == 1579190471
+              select X;
             var ItemJanFile = JsonConvert.SerializeObject(ItemJan);
-            File.WriteAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/purchased - at - 2020 - 01 - 16.json", ItemJanFile);
+            File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/purchased - at - 2020 - 01 - 16.json", ItemJanFile);
             //Console.WriteLine("all items was purchased at 16 Januari 2020: ");
             //Console.Write(String.Join(", ", ItemJan));
             //Console.WriteLine(" ");
 
-
-            //Find all items with brown color, all-browns.json.
-            var  Brown = new List<Inventory>();
-            foreach (var X in num3)
-            {
-                for(int i=0;i<(X.Tags).Count();i++)
-                {
-                    if((X.Tags)[i]=="brown")
-                    {
-                        Brown.Add(X);
-                    }
-                }
-            }
+            ////Find all items with brown color, all-browns.json.
+            IEnumerable<Inventory> Brown =
+              from X in num3
+              where X.Tags.Contains("brown")
+              select X;
             var BrownFile = JsonConvert.SerializeObject(Brown);
-            File.WriteAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/all-browns.json", BrownFile);
-            //Console.WriteLine("all brown items: ");
-            //Console.Write(String.Join(", ", Brown));
-            //Console.WriteLine(" ");
+            File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/all-browns.json", BrownFile);
+         
 
         }
     }

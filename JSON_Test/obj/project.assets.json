@@ -57,11 +57,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/user/Projects/JSON_Test/JSON_Test/JSON_Test.csproj",
+      "projectUniqueName": "/Users/user/Projects/JSON_LINQ_Test/JSON_Test/JSON_Test.csproj",
       "projectName": "JSON_Test",
-      "projectPath": "/Users/user/Projects/JSON_Test/JSON_Test/JSON_Test.csproj",
+      "projectPath": "/Users/user/Projects/JSON_LINQ_Test/JSON_Test/JSON_Test.csproj",
       "packagesPath": "/Users/user/.nuget/packages/",
-      "outputPath": "/Users/user/Projects/JSON_Test/JSON_Test/obj/",
+      "outputPath": "/Users/user/Projects/JSON_LINQ_Test/JSON_Test/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/user/.config/NuGet/NuGet.Config"

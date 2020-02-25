@@ -185,32 +185,33 @@ namespace JSON_Test
             var num2 = JsonConvert.DeserializeObject<List<Order>>(json2);
 
             ////Find all purchases made in February.
-            IEnumerable<string> purFeb =
-              from X in num2
-              where (X.Created_at).Month == 2
-              select X.Order_id;
+            //IEnumerable<string> purFeb =
+            //  from X in num2
+            //  where (X.Created_at).Month == 2
+            //  select X.Order_id;
 
-            //var purFeb = num2.Where
-            //    (X => X.Created_at.Month == 02);
+            var purFeb = num2.Where
+                (X => X.Created_at.Month == 02)
+                .Select(X => X.Order_id);
 
             Console.WriteLine("all purchases made in February: ");
             Console.Write(String.Join(", ", purFeb));
             Console.WriteLine(" ");
 
             ////Find all purchases made by Ari, and add grand total by sum all total price of items. The output should only a number.
-            IEnumerable<int> ariSum =
-              from X in num2
-              where X.Customer.Name == "Ari"
-              from Y in X.Items
-              select Y.Price * Y.Qty;
-            int sum = ariSum.Sum();
+            //IEnumerable<int> ariSum =
+            //  from X in num2
+            //  where X.Customer.Name == "Ari"
+            //  from Y in X.Items
+            //  select Y.Price * Y.Qty;
+            //int sum = ariSum.Sum();
 
-            //var sum = num2.Where
-            //    (X => X.Customer.Name == "Ari")
-            //    .Sum(X => X.Items.Sum(X => X.Price * X.Qty));
+            var sum = num2.Where
+                (X => X.Customer.Name == "Ari")
+                .Sum(X => X.Items.Sum(X => X.Price * X.Qty));
 
-            Console.WriteLine("ari belanja: ");
-            Console.Write(String.Join(", ", ariSum));
+            //Console.WriteLine("ari belanja: ");
+            //Console.Write(String.Join(", ", ariSum));
             Console.WriteLine(" ");
             Console.WriteLine($"total ari belanja: {sum}");
             Console.WriteLine(" ");
@@ -271,62 +272,62 @@ namespace JSON_Test
             var num3 = JsonConvert.DeserializeObject<List<Inventory>>(json3);
 
             //Find items in Meeting Room, and save it to items.json.
-            //IEnumerable<Inventory> MeetRoomItem =
-            //  from X in num3
-            //  where X.Placement.Name == "Meeting Room"
-            //  select X;
+            IEnumerable<Inventory> MeetRoomItem =
+              from X in num3
+              where X.Placement.Name == "Meeting Room"
+              select X;
 
-            var MeetRoomItem = num3.Where
-                (X => X.Placement.Name == "Meeting Room");
+            //var MeetRoomItem = num3.Where
+            //    (X => X.Placement.Name == "Meeting Room");
 
             var MeetRoomItemFile = JsonConvert.SerializeObject(MeetRoomItem);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/items.json", MeetRoomItemFile);
 
             ////Find all electronic devices, and save it to electronic.json.
-            //IEnumerable<Inventory> Electronics =
-            //  from X in num3
-            //  where X.Type == "electronic"
-            //  select X;
+            IEnumerable<Inventory> Electronics =
+              from X in num3
+              where X.Type == "electronic"
+              select X;
 
-            var Electronics = num3.Where
-                (X => X.Type == "electronic");
+            //var Electronics = num3.Where
+            //    (X => X.Type == "electronic");
 
             var ElectronicsFile = JsonConvert.SerializeObject(Electronics);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/electronic.json", ElectronicsFile);
 
             //Find all furnitures, and save it to furnitures.json.
-            //IEnumerable<Inventory> Furnitures =
-            //  from X in num3
-            //  where X.Type == "furniture"
-            //  select X;
+            IEnumerable<Inventory> Furnitures =
+              from X in num3
+              where X.Type == "furniture"
+              select X;
 
-            var Furnitures = num3.Where
-                (X => X.Type == "furniture");
+            //var Furnitures = num3.Where
+            //    (X => X.Type == "furniture");
 
             var FurnitureFile = JsonConvert.SerializeObject(Furnitures);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/furnitures.json", FurnitureFile);
 
             //Find all items was purchased at 16 Januari 2020, and save it to purchased - at - 2020 - 01 - 16.json.
-            //IEnumerable<Inventory> ItemJan =
-            //  from X in num3
-            //  where X.Purchased_at.ToString().Contains("15791")
-            //  select X;
+            IEnumerable<Inventory> ItemJan =
+              from X in num3
+              where X.Purchased_at.ToString().Contains("15791")
+              select X;
 
-            var ItemJan = num3.Where
-                (X => X.Purchased_at.ToString().Contains("15791"));
+            //var ItemJan = num3.Where
+            //    (X => X.Purchased_at.ToString().Contains("15791"));
 
             var ItemJanFile = JsonConvert.SerializeObject(ItemJan);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/purchased - at - 2020 - 01 - 16.json", ItemJanFile);
 
 
             ////Find all items with brown color, all-browns.json.
-            //IEnumerable<Inventory> Brown =
-            //  from X in num3
-            //  where X.Tags.Contains("brown")
-            //  select X;
+            IEnumerable<Inventory> Brown =
+              from X in num3
+              where X.Tags.Contains("brown")
+              select X;
 
-            var Brown = num3.Where
-                (X => X.Tags.Contains("brown"));
+            //var Brown = num3.Where
+            //    (X => X.Tags.Contains("brown"));
 
             var BrownFile = JsonConvert.SerializeObject(Brown);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/all-browns.json", BrownFile);

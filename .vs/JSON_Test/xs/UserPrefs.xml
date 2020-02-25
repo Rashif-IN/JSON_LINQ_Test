@@ -1,15 +1,12 @@
 ﻿<Properties StartupConfiguration="{4DDA7A18-71CD-4C77-973D-85D06D3A9E18}|Default">
   <MonoDevelop.Ide.ItemProperties.JSON__Test PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="JSON_Test/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="JSON_Test/num2.json">
     <Files>
       <File FileName="JSON_Test/Program.cs" Line="326" Column="26" />
-      <File FileName="JSON_Test/num1.json" Line="1" Column="1" />
-      <File FileName="JSON_Test/all-browns.json" Line="1" Column="1" />
-      <File FileName="JSON_Test/electronic.json" Line="1" Column="1" />
-      <File FileName="JSON_Test/furnitures.json" Line="1" Column="1" />
-      <File FileName="JSON_Test/items.json" Line="1" Column="1" />
-      <File FileName="JSON_Test/purchased - at - 2020 - 01 - 16.json" Line="1" Column="1" />
-      <File FileName="JSON_Test/num3.json" Line="13" Column="20" NotebookId="1" />
+      <File FileName="JSON_Test/electronic.json" />
+      <File FileName="JSON_Test/furnitures.json" />
+      <File FileName="JSON_Test/items.json" />
+      <File FileName="JSON_Test/purchased - at - 2020 - 01 - 16.json" />
       <File FileName="JSON_Test/num2.json" Line="1" Column="1" NotebookId="1" />
     </Files>
     <Pads>
@@ -17,7 +14,7 @@
         <State name="__root__">
           <Node name="JSON_Test" expanded="True">
             <Node name="JSON_Test" expanded="True">
-              <Node name="Program.cs" selected="True" />
+              <Node name="num2.json" selected="True" />
             </Node>
           </Node>
         </State>

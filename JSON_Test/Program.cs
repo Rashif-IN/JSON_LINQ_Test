@@ -63,7 +63,7 @@ namespace JSON_Test
         {
             public string Order_id
             { get; set; }
-            public string Created_at
+            public DateTime Created_at
             { get; set; }
             public Customer Customer
             { get; set; }
@@ -165,8 +165,7 @@ namespace JSON_Test
             IEnumerable<string> pubAug =
                 from X in num1
                 from Y in X.Articles
-                where (Y.Published_at).Year <2019
-                where (Y.Published_at).Month < 8 && (Y.Published_at).Year == 2019
+                where (Y.Published_at).Year <2019 ||( (Y.Published_at).Month < 8 && (Y.Published_at).Year == 2019)
                 select Y.Title;
 
             Console.WriteLine("articles published before August 2019: ");
@@ -188,7 +187,7 @@ namespace JSON_Test
             ////Find all purchases made in February.
             IEnumerable<string> purFeb =
               from X in num2
-              where Convert.ToInt32(((X.Created_at).Substring (5,2)).ToLower()) == 2
+              where (X.Created_at).Month == 2
               select X.Order_id;
             Console.WriteLine("all purchases made in February: ");
             Console.Write(String.Join(", ", purFeb));
@@ -211,28 +210,43 @@ namespace JSON_Test
 
 
             ////Find people who have purchases with grand total lower than 300000.The output is an array of people name.Duplicate name is not allowed.
-            List<string> kaumHemat = new List<string>();
-            IEnumerable<string> Bname =
-              from X in num2
-              select X.Customer.Name;
-            var Buyer = Bname.Distinct().ToArray();
-            for (int i = 0; i < Buyer.Count(); i++)
-            {
-                IEnumerable<int> sumEveryone = from X in num2
-                  where X.Customer.Name == Buyer[i]
-                  from Y in X.Items
-                  select Y.Price * Y.Qty;
-                int summ = sumEveryone.Sum();
-                if (summ < 300000)
-                {
-                    kaumHemat.Add(Buyer[i]);
-                    summ = 0;
-                }
-                else
-                {
-                    summ = 0;
-                }
-            }
+            //List<string> kaumHemat = new List<string>();
+            //IEnumerable<string> Bname =
+            //  from X in num2
+            //  select X.Customer.Name;
+            //var Buyer = Bname.Distinct().ToArray();
+            //for (int i = 0; i < Buyer.Count(); i++)
+            //{
+            //    IEnumerable<int> sumEveryone = from X in num2
+            //      where X.Customer.Name == Buyer[i]
+            //      from Y in X.Items
+            //      select Y.Price * Y.Qty;
+            //    int summ = sumEveryone.Sum();
+            //    if (summ < 300000)
+            //    {
+            //        kaumHemat.Add(Buyer[i]);
+            //        summ = 0;
+            //    }
+            //    else
+            //    {
+            //        summ = 0;
+            //    }
+            //}
+
+            var kaumHemat =
+                num2.GroupBy
+                (
+                    x => x.Customer.Name,
+                    x => x.Items.Sum
+                        (x => x.Price * x.Qty),
+                        (name, total) => new
+                            {
+                                Key = name, Total = total.Sum()
+                            }
+                )
+                .Where(x => x.Total < 300000)
+                .Select(x => x.Key);
+
             Console.WriteLine("para kaum hemat who have purchases with grand total lower than 300000: ");
             Console.Write(String.Join(", ", kaumHemat));
             Console.WriteLine(" ");
@@ -245,7 +259,6 @@ namespace JSON_Test
 
             ////Num3-Your tasks:
             var json3 = File.ReadAllText(@"/Users/user/Projects/JSON_Test/JSON_Test/num3.json");
-
             var num3 = JsonConvert.DeserializeObject<List<Inventory>>(json3);
 
             //Find items in Meeting Room, and save it to items.json.
@@ -273,21 +286,9 @@ namespace JSON_Test
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/furnitures.json", FurnitureFile);
 
             //Find all items was purchased at 16 Januari 2020, and save it to purchased - at - 2020 - 01 - 16.json.
-
-            //var ItemJan = new List<Inventory>();
-            //foreach (var X in num3)
-            //{
-            //    var timestamp = X.Purchased_at;
-            //    DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(timestamp);
-            //    if (date.Year == 2020 && date.Month == 1 && date.Day == 16)
-            //    {
-            //        ItemJan.Add(X);
-            //    }
-            //}
-
             IEnumerable<Inventory> ItemJan =
               from X in num3
-              where X.Purchased_at == 1579190471
+              where X.Purchased_at.ToString().Contains("15791")
               select X;
             var ItemJanFile = JsonConvert.SerializeObject(ItemJan);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/purchased - at - 2020 - 01 - 16.json", ItemJanFile);

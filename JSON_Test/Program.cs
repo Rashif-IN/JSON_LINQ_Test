@@ -189,6 +189,10 @@ namespace JSON_Test
               from X in num2
               where (X.Created_at).Month == 2
               select X.Order_id;
+
+            //var purFeb = num2.Where
+            //    (X => X.Created_at.Month == 02);
+
             Console.WriteLine("all purchases made in February: ");
             Console.Write(String.Join(", ", purFeb));
             Console.WriteLine(" ");
@@ -200,6 +204,11 @@ namespace JSON_Test
               from Y in X.Items
               select Y.Price * Y.Qty;
             int sum = ariSum.Sum();
+
+            //var sum = num2.Where
+            //    (X => X.Customer.Name == "Ari")
+            //    .Sum(X => X.Items.Sum(X => X.Price * X.Qty));
+
             Console.WriteLine("ari belanja: ");
             Console.Write(String.Join(", ", ariSum));
             Console.WriteLine(" ");
@@ -236,16 +245,16 @@ namespace JSON_Test
             var kaumHemat =
                 num2.GroupBy
                 (
-                    x => x.Customer.Name,
-                    x => x.Items.Sum
-                        (x => x.Price * x.Qty),
+                    X => X.Customer.Name,
+                    X => X.Items.Sum
+                        (X => X.Price * X.Qty),
                         (name, total) => new
                             {
                                 Key = name, Total = total.Sum()
                             }
                 )
-                .Where(x => x.Total < 300000)
-                .Select(x => x.Key);
+                .Where(X => X.Total < 300000)
+                .Select(X => X.Key);
 
             Console.WriteLine("para kaum hemat who have purchases with grand total lower than 300000: ");
             Console.Write(String.Join(", ", kaumHemat));
@@ -262,45 +271,63 @@ namespace JSON_Test
             var num3 = JsonConvert.DeserializeObject<List<Inventory>>(json3);
 
             //Find items in Meeting Room, and save it to items.json.
-            IEnumerable<Inventory> MeetRoomItem =
-              from X in num3
-              where X.Placement.Name == "Meeting Room"
-              select X;
+            //IEnumerable<Inventory> MeetRoomItem =
+            //  from X in num3
+            //  where X.Placement.Name == "Meeting Room"
+            //  select X;
+
+            var MeetRoomItem = num3.Where
+                (X => X.Placement.Name == "Meeting Room");
+
             var MeetRoomItemFile = JsonConvert.SerializeObject(MeetRoomItem);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/items.json", MeetRoomItemFile);
 
             ////Find all electronic devices, and save it to electronic.json.
-            IEnumerable<Inventory> Electronics =
-              from X in num3
-              where X.Type == "electronic"
-              select X;
+            //IEnumerable<Inventory> Electronics =
+            //  from X in num3
+            //  where X.Type == "electronic"
+            //  select X;
+
+            var Electronics = num3.Where
+                (X => X.Type == "electronic");
+
             var ElectronicsFile = JsonConvert.SerializeObject(Electronics);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/electronic.json", ElectronicsFile);
 
             //Find all furnitures, and save it to furnitures.json.
-            IEnumerable<Inventory> Furnitures =
-              from X in num3
-              where X.Type == "furniture"
-              select X;
+            //IEnumerable<Inventory> Furnitures =
+            //  from X in num3
+            //  where X.Type == "furniture"
+            //  select X;
+
+            var Furnitures = num3.Where
+                (X => X.Type == "furniture");
+
             var FurnitureFile = JsonConvert.SerializeObject(Furnitures);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/furnitures.json", FurnitureFile);
 
             //Find all items was purchased at 16 Januari 2020, and save it to purchased - at - 2020 - 01 - 16.json.
-            IEnumerable<Inventory> ItemJan =
-              from X in num3
-              where X.Purchased_at.ToString().Contains("15791")
-              select X;
+            //IEnumerable<Inventory> ItemJan =
+            //  from X in num3
+            //  where X.Purchased_at.ToString().Contains("15791")
+            //  select X;
+
+            var ItemJan = num3.Where
+                (X => X.Purchased_at.ToString().Contains("15791"));
+
             var ItemJanFile = JsonConvert.SerializeObject(ItemJan);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/purchased - at - 2020 - 01 - 16.json", ItemJanFile);
-            //Console.WriteLine("all items was purchased at 16 Januari 2020: ");
-            //Console.Write(String.Join(", ", ItemJan));
-            //Console.WriteLine(" ");
+
 
             ////Find all items with brown color, all-browns.json.
-            IEnumerable<Inventory> Brown =
-              from X in num3
-              where X.Tags.Contains("brown")
-              select X;
+            //IEnumerable<Inventory> Brown =
+            //  from X in num3
+            //  where X.Tags.Contains("brown")
+            //  select X;
+
+            var Brown = num3.Where
+                (X => X.Tags.Contains("brown"));
+
             var BrownFile = JsonConvert.SerializeObject(Brown);
             File.WriteAllText(@"/Users/user/Projects/JSON_LINQ_Test/JSON_Test/all-browns.json", BrownFile);
          
